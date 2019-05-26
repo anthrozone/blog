@@ -1,0 +1,198 @@
+openapi: "3.0.0"
+info:
+  title: "Blog API"
+  version: 0.0.1
+paths:
+  /auth/login:
+    post:
+      operationId: login
+      summary: Log into the platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: |-
+            Logged in successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    $ref: "#/components/schemas/User"
+        '400':
+          description: |-
+            Request body was invalid or missing
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  result:
+                    type: string
+        '403':
+          description: |-
+            Provided login details were invalid
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 403
+                  result:
+                    type: string
+  /auth/signup:
+    post:
+      operationId: signup
+      summary: Create a new account on the platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: |-
+            Account created successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    $ref: "#/components/schemas/User"
+        '400':
+          description: |-
+            Request body was invalid or missing
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  result:
+                    type: string
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 409
+                  result:
+                    type: string
+components:
+  schemas:
+    Blog:
+      required:
+        - name
+        - tagline
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        tagline:
+          type: string
+        owner:
+          type: string
+        cname:
+          type: string
+        editors:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: string
+    Blogs:
+      type: array
+      items:
+        $ref: "#/components/schemas/Blog"
+    Post:
+      required: 
+        - title
+        - content
+        - tags
+      properties:
+        id:
+          type: string
+        blog:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        timestamp:
+          type: string
+        last_edited:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    Posts:
+      type: array
+      items:
+        $ref: "#/components/schemas/Post"
+    User:
+      required: 
+        - username
+        - password
+        - email
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        blogs:
+          type: array
+          items:
+            type: string
+        token:
+          type: string
+        profile_picture:
+          type: string
+    Comment:
+      required: 
+        - content
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        author:
+          type: string
+        post:
+          type: string
+        timestamp:
+          type: string
+    Comments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Comment"
+    
